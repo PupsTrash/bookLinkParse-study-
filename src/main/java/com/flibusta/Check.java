@@ -1,4 +1,5 @@
-import com.flibusta.InitialParse;
+package com.flibusta;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
@@ -6,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
 
-@ComponentScan("com.flibusta")
+@ComponentScan
 @Configuration
 public class Check {
 /*    public static void main(String[] args) throws IOException {
@@ -34,7 +35,7 @@ public class Check {
     }*/
 public static void main(String[] args) {
     ApplicationContext ctx = new AnnotationConfigApplicationContext(Check.class);
-    InitialParse initialParse = ctx.getBean(InitialParse.class);
+    InitialParseImpl initialParse = ctx.getBean(InitialParseImpl.class);
     try {
         System.out.println(initialParse.getLinkMap().toString());
         initialParse.getTitleLinkMap();

@@ -1,23 +1,24 @@
 package com.flibusta;
 
+import lombok.RequiredArgsConstructor;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@Component
-public class InitialParse {
-    @Autowired
-    private InitialSearch initialSearch;
+@Service
+@RequiredArgsConstructor
+public class InitialParseImpl {
+
+    private final InitialSearch initialSearch;
+
 
     //переработать так чтобы был один запрос на getPage
 
-    public InitialParse() throws IOException {
-    }
 
     public Map<String, String> getLinkMap() throws IOException {
         Document page = initialSearch.getPage("булгаков");

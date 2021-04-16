@@ -13,6 +13,8 @@ import java.net.Proxy;
 @NoArgsConstructor
 public class InitialSearchImpl implements InitialSearch {
 
+
+
     public Document getPage(String searchRequest) throws IOException {
         String sourceUrl = "http://flibustahezeous3.onion/booksearch?ask=" + searchRequest;
         Document page = Jsoup.connect(sourceUrl)

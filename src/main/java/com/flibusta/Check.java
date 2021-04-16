@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
 
-@ComponentScan
-@Configuration
+/*@ComponentScan
+@Configuration*/
 public class Check {
 /*    public static void main(String[] args) throws IOException {
     Document page = getPage();
@@ -33,14 +33,21 @@ public class Check {
                 .get();
         return page;
     }*/
-public static void main(String[] args) {
-    ApplicationContext ctx = new AnnotationConfigApplicationContext(Check.class);
-    InitialParseImpl initialParse = ctx.getBean(InitialParseImpl.class);
-    try {
-        System.out.println(initialParse.getLinkMap().toString());
-        initialParse.getTitleLinkMap();
-    } catch (IOException e) {
-        e.printStackTrace();
+
+
+/*
+    public static void main(String[] args) {
+        ApplicationContext ctx = new AnnotationConfigApplicationContext(Check.class);
+        InitialParseImpl initialParse = ctx.getBean(InitialParseImpl.class);
+        try {
+
+            System.out.println(initialParse.getTitleLinkMap());
+            System.out.println(initialParse.getLinkMap("булгаков"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
 }
+*/
 }

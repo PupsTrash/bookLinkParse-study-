@@ -13,7 +13,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 @Slf4j
 @RestController
 @AllArgsConstructor
-public class TestController {
+public class MainController {
 
     private final PupsBot pupsBot;
 

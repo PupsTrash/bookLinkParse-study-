@@ -1,13 +1,15 @@
 package com.telegramBot;
 
 import lombok.Getter;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramWebhookBot;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Slf4j
@@ -33,4 +35,12 @@ public class PupsBot extends TelegramWebhookBot {
         return pupsBotServices.initMain(update);
     }
 
+    @SneakyThrows
+    public void sendDocument(Long chatId, String caption, InputFile sendFile) {
+        SendDocument sendDocument = new SendDocument();
+        sendDocument.setChatId(chatId.toString());
+        sendDocument.setCaption(caption);
+        sendDocument.setDocument(sendFile);
+        execute(sendDocument);
+    }
 }

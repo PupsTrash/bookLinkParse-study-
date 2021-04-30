@@ -1,80 +1,54 @@
 package com.telegramBot;
 
-import com.flibusta.InitialParseImpl;
-import lombok.NoArgsConstructor;
+import com.telegramBot.handlers.replyMarkup.IReplyMarkup;
+import com.telegramBot.handlers.request.IRequestHandler;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jvnet.hk2.annotations.Service;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
 @Slf4j
-@Component
-@NoArgsConstructor
+@Service
+@RequiredArgsConstructor
 public class PupsBotServices {
 
-    @Autowired
-    private InitialParseImpl initialParse;
 
-    public SendMessage initMain(Update update) {
-        Message message = update.getMessage();
-        if (message != null && message.hasText()) {
+    private final IRequestHandler mainRequestHandler;
+    private final IReplyMarkup mainReplyMarkupHandler;
+
+    public BotApiMethod<?> initMain(Update update) {
+
+        if (!update.hasCallbackQuery() && update.getMessage().hasText()) {
             log.info("New message from User:{}, chatId: {},  with text: {}",
-                    message.getFrom().getUserName(), message.getChatId(), message.getText());
-            return choseAction(message);
-        }
-        return null;
-    }
+                    update.getMessage().getFrom().getUserName(),
+                    update.getMessage().getChatId(),
+                    update.getMessage().getText());
 
-    private SendMessage choseAction(Message message) {
-        String inputMessage = message.getText();
-        Long userId = message.getFrom().getId();
-
-
-        if (inputMessage.startsWith("http://flibustahezeous3.onion")){
-
-
-            //do Smthg
-        }else if (inputMessage.length()>=3){
-
-
-            //initalparse
-            try {
-                Map<String, String> test = initialParse.getLinkMap(inputMessage);
-                if (test == null){
-                    return new SendMessage(userId.toString(), "OOPS, i can`t find this!");
-                }
-                StringBuffer stringBuffer = new StringBuffer();
-                stringBuffer.append(initialParse.getTitleLinkMap());
-                stringBuffer.append("\n");
-                int i = 1;
-                for (String a : test.values()) {
-                    stringBuffer.append(i);
-                    stringBuffer.append(". ");
-                    stringBuffer.append(a);
-                    stringBuffer.append("\n");
-                    i++;
-                }
-                return new SendMessage(userId.toString(), stringBuffer.toString() );
-            } catch (IOException e) {
-                e.printStackTrace();
+            if (mainRequestHandler.canProcessing(update)) {
+                return mainRequestHandler.messageToUser(update);
             }
 
+            return new SendMessage(update.getMessage().getFrom().getId().toString(),
+                    "oops, invalid request... Don't worry & Try again");
+        }
 
+        if (update.hasCallbackQuery()) {
+            log.info("New callbackQuery from User:{}, chatId: {},  with data: {}",
+                    update.getCallbackQuery().getFrom().getUserName(),
+                    update.getCallbackQuery().getFrom().getId(),
+                    update.getCallbackQuery().getData());
 
+            if (mainReplyMarkupHandler.canProcessing(update)) {
+                return mainReplyMarkupHandler.messageToUser(update);
+            }
 
-        }else {
-            return new SendMessage(userId.toString(), "lets try again");
+            return new SendMessage(update.getCallbackQuery().getFrom().getId().toString(),
+                    "oops, invalid request... Don't worry & Try again");
         }
 
 
-        return new SendMessage(userId.toString(), "oops, Something went wrong");
-
+        return new SendMessage(update.getMessage().getFrom().getId().toString(), "error processing message. see PupsBotServices");
     }
 }

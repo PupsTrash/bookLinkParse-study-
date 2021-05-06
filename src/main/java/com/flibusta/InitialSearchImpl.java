@@ -1,6 +1,7 @@
 package com.flibusta;
 
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 
+@Slf4j
 @Service
 @NoArgsConstructor
 public class InitialSearchImpl implements InitialSearch {
@@ -21,7 +23,8 @@ public class InitialSearchImpl implements InitialSearch {
                 .userAgent("Chrome/4.0.249.0 Safari/532.5")
                 .referrer("http://www.google.com")
                 .get();
-        System.out.println("!!!Connection upp!!!");
+        log.info("Connect to: {} with search request: {}",
+                sourceUrl, searchRequest);
 
         return page;
     }

@@ -1,7 +1,6 @@
 package com.telegramBot.handlers.replyMarkup;
 
 import com.flibusta.IDownloadFile;
-import com.flibusta.InitialSearch;
 import com.telegramBot.PupsBot;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -17,7 +16,6 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class DownloadReplyMarkupHandlerImpl implements IReplyMarkup {
 
-    private final InitialSearch initialSearch;
     private final PupsBot pupsBot;
     private final IDownloadFile iDownloadFile;
 

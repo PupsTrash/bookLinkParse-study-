@@ -2,7 +2,6 @@ package com.flibusta;
 
 import org.jsoup.nodes.Document;
 
-import java.io.File;
 import java.io.IOException;
 
 public interface InitialSearch {
